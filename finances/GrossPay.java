@@ -1,7 +1,7 @@
 package finances;
 
 public class GrossPay {
-    private double grossPay;
+    private final double grossPay;
 
     public GrossPay(double grossPay) {
         this.grossPay = grossPay;
