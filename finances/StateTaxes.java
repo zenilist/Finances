@@ -1,19 +1,13 @@
 package finances;
-
-import org.junit.Test;
-
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
 
 public class StateTaxes implements Taxes {
 
     private static double totalStateTaxes;
-    private double stateTax;
-    private String state;
-    private Map<String, Double> stateTaxRates = new HashMap<>();
+    private final double stateTax;
+    private final String state;
+    private final Map<String, Double>  stateTaxRates = new HashMap<>();
     public StateTaxes(double taxableWages, String state) {
         this.state = state;
         fillMap();
@@ -54,11 +48,5 @@ public class StateTaxes implements Taxes {
     }
     public static double getTotalStateTaxes() {
         return totalStateTaxes;
-    }
-
-    @Test
-    public static void main(String [] args){
-        StateTaxes stateTaxes = new StateTaxes(1594, "Utah");
-        assertEquals(74.0, stateTaxes.getTaxAmount(), 0.0);
     }
 }

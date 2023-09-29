@@ -2,10 +2,11 @@ package finances;
 
 public class Medicare {
     private static double totalMedicareDeductions = 0;
-    private double medicareDeduction;
+    private final double medicareDeduction;
     private final double RATE = 1.45;
     public Medicare(double grossPay) {
         this.medicareDeduction = calculateDeduction(grossPay);
+        totalMedicareDeductions += medicareDeduction;
     }
 
     public static double getTotalMedicareDeductions() {

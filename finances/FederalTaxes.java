@@ -1,9 +1,5 @@
 package finances;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-
 public class FederalTaxes implements Taxes{
 
     private final int PAY_PERIODS = 26;
@@ -38,10 +34,5 @@ public class FederalTaxes implements Taxes{
                  taxBracket += 1;
         }
         return federalTaxes / PAY_PERIODS;
-    }
-
-    @Test
-    public static void main(String [] args){
-        FederalTaxes federalTaxes = new FederalTaxes(2553.96);
     }
 }

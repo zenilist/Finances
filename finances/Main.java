@@ -17,7 +17,7 @@ public class Main {
         String state = getInput(scanner, "Enter state of residency");
         int payPeriod = getPayPeriod(payFrequency);
         scanner.close();
-        double grossSalaryPerPayPeriod = (double)yearlySalary / payPeriod;
+        double grossSalaryPerPayPeriod = yearlySalary / payPeriod;
         GrossPay grossPay = new GrossPay(grossSalaryPerPayPeriod);
         NetPay netPay = new NetPay(grossPay.getGrossPay(), rothTspRate, traditionalTspRate, state);
         System.out.printf("Your " + payFrequency + " pays tub is: $" + netPay.getNetPay());
