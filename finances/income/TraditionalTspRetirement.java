@@ -1,10 +1,18 @@
-package finances;
+package finances.income;
 
 public class TraditionalTspRetirement implements TspRetirement {
     static double totalTraditionalContributions = 0;
-    private final double contribution;
+    private double contribution;
+
     public TraditionalTspRetirement(double grossPay, double retirementTraditionalContributionsRate) {
         this.contribution = calculateDeductions(grossPay, retirementTraditionalContributionsRate);
+    }
+
+    public TraditionalTspRetirement() {
+    }
+
+    private static void addToTotalContribution(double contribution) {
+        totalTraditionalContributions += contribution;
     }
 
     @Override
@@ -13,9 +21,7 @@ public class TraditionalTspRetirement implements TspRetirement {
         addToTotalContribution(contribution);
         return contribution;
     }
-    private static void addToTotalContribution(double contribution) {
-        totalTraditionalContributions += contribution;
-    }
+
     @Override
     public double getTotalContributions() {
         return totalTraditionalContributions;

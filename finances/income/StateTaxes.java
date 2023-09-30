@@ -1,18 +1,23 @@
-package finances;
+package finances.income;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class StateTaxes implements Taxes {
 
     private static double totalStateTaxes;
-    private final double stateTax;
-    private final String state;
-    private final Map<String, Double>  stateTaxRates = new HashMap<>();
+    private final Map<String, Double> stateTaxRates = new HashMap<>();
+    private double stateTax;
+    private String state;
+
     public StateTaxes(double taxableWages, String state) {
         this.state = state;
         fillMap();
         this.stateTax = calculateTax(taxableWages);
         totalStateTaxes += this.stateTax;
+    }
+
+    public StateTaxes() {
     }
 
     //add this feature later on, too many variations
@@ -46,7 +51,8 @@ public class StateTaxes implements Taxes {
     public double getTaxAmount() {
         return stateTax;
     }
-    public static double getTotalStateTaxes() {
+
+    public double getTotalStateTaxes() {
         return totalStateTaxes;
     }
 }

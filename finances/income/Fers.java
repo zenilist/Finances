@@ -1,16 +1,19 @@
-package finances;
+package finances.income;
 
 public class Fers {
     private static double totalFersContribution;
-    private final double fersContribution;
     private final double RATE = 4.4;
+    private double fersContribution;
 
-    public Fers(double grossPay){
+    public Fers(double grossPay) {
         this.fersContribution = calculateContribution(grossPay);
         totalFersContribution += fersContribution;
     }
 
-    public static double getTotalFersContribution() {
+    public Fers() {
+    }
+
+    public double getTotalFersContribution() {
         return totalFersContribution;
     }
 
@@ -19,6 +22,6 @@ public class Fers {
     }
 
     private double calculateContribution(double grossPay) {
-        return grossPay * RATE / 100 ;
+        return grossPay * RATE / 100;
     }
 }

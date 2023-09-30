@@ -1,10 +1,20 @@
-package finances;
+package finances.income;
 
 public class RothTspRetirement implements TspRetirement {
     private static double totalRothRetirement;
-    private final double contribution;
+    private double contribution;
+
     public RothTspRetirement(double grossPay, double retirementContributionsRate) {
         this.contribution = calculateDeductions(grossPay, retirementContributionsRate);
+    }
+
+    public RothTspRetirement() {
+    }
+
+    ;
+
+    private static void addToTotalContribution(double contribution) {
+        totalRothRetirement += contribution;
     }
 
     @Override
@@ -12,10 +22,6 @@ public class RothTspRetirement implements TspRetirement {
         double contribution = GrossPay * (retirementContributionRate / 100);
         addToTotalContribution(contribution);
         return contribution;
-    }
-
-    private static void addToTotalContribution(double contribution) {
-        totalRothRetirement += contribution;
     }
 
     @Override
