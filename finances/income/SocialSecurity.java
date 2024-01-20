@@ -17,7 +17,7 @@ public class SocialSecurity {
         return socialSecurityWithholding;
     }
 
-    public double getTotalSocialSecurityWithheld() {
+    public static double getTotalSocialSecurityWithheld() {
         return totalSocialSecurityWithheld;
     }
 }

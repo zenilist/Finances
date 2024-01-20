@@ -13,7 +13,7 @@ public class Medicare {
     public Medicare() {
     }
 
-    public double getTotalMedicareDeductions() {
+    public static double getTotalMedicareDeductions() {
         return totalMedicareDeductions;
     }
 

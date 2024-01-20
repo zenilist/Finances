@@ -17,7 +17,7 @@ public class FederalTaxes implements Taxes {
     public FederalTaxes() {
     }
 
-    public double getTotalFederalTaxes() {
+    public static double getTotalFederalTaxes() {
         return totalFederalTaxes;
     }
 

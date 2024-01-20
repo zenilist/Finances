@@ -13,11 +13,19 @@ public class GrossPay {
 
     }
 
+    /**
+     *
+     * @return current gross pay
+     */
     public double getGrossPay() {
         return grossPay;
     }
 
-    public double getTotalGrossPay() {
+    /**
+     *
+     * @return total accrued gross pay from checks
+     */
+    public static double getTotalGrossPay() {
         return totalGrossPay;
     }
 

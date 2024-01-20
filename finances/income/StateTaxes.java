@@ -54,7 +54,7 @@ public class StateTaxes implements Taxes {
         return stateTax;
     }
 
-    public double getTotalStateTaxes() {
+    public static double getTotalStateTaxes() {
         return totalStateTaxes;
     }
 }
