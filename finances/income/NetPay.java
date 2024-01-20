@@ -1,13 +1,7 @@
 package finances.income;
 
-import com.opencsv.CSVWriter;
 import finances.common.IncomeType;
 import finances.common.State;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
