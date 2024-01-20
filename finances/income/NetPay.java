@@ -27,25 +27,16 @@ public class NetPay {
         return totalNetPay;
     }
 
-    private static void fillOutputTable(Object[][] table) {
-        GrossPay grossPay = new GrossPay();
-        FederalTaxes federalTaxes = new FederalTaxes();
-        StateTaxes stateTaxes = new StateTaxes();
-        SocialSecurity socialSecurity = new SocialSecurity();
-        Medicare medicare = new Medicare();
-        TraditionalTspRetirement traditionalTspRetirement = new TraditionalTspRetirement();
-        RothTspRetirement rothTspRetirement = new RothTspRetirement();
-        Fers fers = new Fers();
-
-        table[0] = new String[]{"Gross Pay", String.valueOf(grossPay.getTotalGrossPay())};
-        table[1] = new String[]{"Federal Taxes", String.valueOf(federalTaxes.getTotalFederalTaxes())};
-        table[2] = new String[]{"State Taxes", String.valueOf(stateTaxes.getTotalStateTaxes())};
-        table[3] = new String[]{"Social Security Taxes", String.valueOf(socialSecurity.getTotalSocialSecurityWithheld())};
-        table[4] = new String[]{"Medicare", String.valueOf(medicare.getTotalMedicareDeductions())};
-        table[5] = new String[]{"Traditional TSP Retirement Fund", String.valueOf(traditionalTspRetirement.getTotalContributions())};
-        table[6] = new String[]{"Roth TSP Retirement Fund", String.valueOf(rothTspRetirement.getTotalContributions())};
-        table[7] = new String[]{"FERS FUND", String.valueOf(fers.getTotalFersContribution())};
-        table[8] = new String[]{"Net Pay", String.valueOf(getTotalNetPay())};
+    private static void fillOutputTable(String[][] table) {
+        table[0] = new String[]{"Gross Pay", String.format("%.2f", new GrossPay().getTotalGrossPay())};
+        table[1] = new String[]{"Federal Taxes", String.format("%.2f",new FederalTaxes().getTotalFederalTaxes())};
+        table[2] = new String[]{"State Taxes", String.format("%.2f",new StateTaxes().getTotalStateTaxes())};
+        table[3] = new String[]{"Social Security Taxes", String.format("%.2f", new SocialSecurity().getTotalSocialSecurityWithheld())};
+        table[4] = new String[]{"Medicare", String.format("%.2f", new Medicare().getTotalMedicareDeductions())};
+        table[5] = new String[]{"Traditional TSP Retirement Fund", String.format("%.2f", new TraditionalTspRetirement().getTotalContributions())};
+        table[6] = new String[]{"Roth TSP Retirement Fund", String.format("%.2f", new RothTspRetirement().getTotalContributions())};
+        table[7] = new String[]{"FERS FUND", String.format("%.2f", new Fers().getTotalFersContribution())};
+        table[8] = new String[]{"Net Pay", String.format("%.2f",getTotalNetPay())};
     }
 
     private void calculateNetPay(double grossPay) {
@@ -102,13 +93,13 @@ public class NetPay {
     }
 
     public void showIncomeBreakdown() {
-        Object[][] table = new String[9][];
+        String[][] table = new String[9][];
 
         fillOutputTable(table);
 
         System.out.format("--------------------------Income Breakdown--------------------------\n");
         System.out.format("%-50s%-50s\n", "Type", "Total Amount");
-        for (Object[] row :
+        for (String[] row :
                 table) {
             System.out.format("%-50s%-50s\n", row[0], row[1]);
         }
