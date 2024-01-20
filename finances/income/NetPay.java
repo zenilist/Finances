@@ -1,19 +1,15 @@
 package finances.income;
 
+import finances.common.State;
+
 public class NetPay {
-    static String state;
+    static State state;
     private static double totalNetPay;
     private final double RETIREMENT_ROTH_CONTRIBUTIONS_RATE;
     private final double RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE;
-    private double netPay;
-
-    public NetPay(double RETIREMENT_ROTH_CONTRIBUTIONS_RATE, double RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE) {
-        this.RETIREMENT_ROTH_CONTRIBUTIONS_RATE = RETIREMENT_ROTH_CONTRIBUTIONS_RATE;
-        this.RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE = RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE;
-    }
 
     public NetPay(double grossPay, double RETIREMENT_ROTH_CONTRIBUTIONS_RATE,
-                  double RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE, String state) {
+                  double RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE, State state) {
         this.RETIREMENT_ROTH_CONTRIBUTIONS_RATE = RETIREMENT_ROTH_CONTRIBUTIONS_RATE;
         this.RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE = RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE;
         NetPay.state = state;
@@ -66,9 +62,9 @@ public class NetPay {
 
         double fersContribution = calculateFersContribution(grossPay);
 
-        double medicareDeduction = calculateMedicareDedection(grossPay);
+        double medicareDeduction = calculateMedicareDeduction(grossPay);
 
-        netPay = taxableWages - federalTaxAmount - traditionalContribution - socialSecurityWithholding
+        double netPay = taxableWages - federalTaxAmount - traditionalContribution - socialSecurityWithholding
                 - stateTaxAmount - fersContribution - medicareDeduction;
 
         totalNetPay += netPay;
@@ -84,7 +80,7 @@ public class NetPay {
         return roth.getContribution();
     }
 
-    private double calculateMedicareDedection(double grossPay) {
+    private double calculateMedicareDeduction(double grossPay) {
         Medicare medicare = new Medicare(grossPay);
         return medicare.getMedicareDeduction();
     }
@@ -103,10 +99,6 @@ public class NetPay {
     private double calculateSocialSecurityWithholding(double grossPay) {
         SocialSecurity socialSecurity = new SocialSecurity(grossPay);
         return socialSecurity.getSocialSecurityWithholding();
-    }
-
-    public double getNetPay() {
-        return netPay;
     }
 
     public void showIncomeBreakdown() {

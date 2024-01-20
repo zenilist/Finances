@@ -1,16 +1,18 @@
 package finances.income;
 
+import finances.common.State;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class StateTaxes implements Taxes {
 
     private static double totalStateTaxes;
-    private final Map<String, Double> stateTaxRates = new HashMap<>();
+    private final Map<State, Double> stateTaxRates = new HashMap<>();
     private double stateTax;
-    private String state;
+    private State state;
 
-    public StateTaxes(double taxableWages, String state) {
+    public StateTaxes(double taxableWages, State state) throws IllegalArgumentException {
         this.state = state;
         fillMap();
         this.stateTax = calculateTax(taxableWages);
@@ -22,28 +24,28 @@ public class StateTaxes implements Taxes {
 
     //add this feature later on, too many variations
     private void fillMap() {
-        stateTaxRates.put("TEXAS", 0.0);
-        stateTaxRates.put("TENNESSEE", 0.0);
-        stateTaxRates.put("SOUTH DAKOTA", 0.0);
-        stateTaxRates.put("WYOMING", 0.0);
-        stateTaxRates.put("ALASKA", 0.0);
-        stateTaxRates.put("FLORIDA", 0.0);
-        stateTaxRates.put("COLORADO", 4.4);
-        stateTaxRates.put("ILLINOIS", 4.95);
-        stateTaxRates.put("INDIANA", 3.23);
-        stateTaxRates.put("NEW HAMPSHIRE", 5.0);
-        stateTaxRates.put("PENNSYLVANIA", 3.07);
-        stateTaxRates.put("UTAH", 4.85);
-        stateTaxRates.put("WASHINGTON", 7.0);
-        stateTaxRates.put("KENTUCKY", 5.0);
-        stateTaxRates.put("MASSACHUSETTS", 5.0);
-        stateTaxRates.put("NEVADA", 0.0);
-        stateTaxRates.put("MICHIGAN", 3.07);
+        stateTaxRates.put(State.TX, 0.0);
+        stateTaxRates.put(State.TN, 0.0);
+        stateTaxRates.put(State.SD, 0.0);
+        stateTaxRates.put(State.WY, 0.0);
+        stateTaxRates.put(State.AK, 0.0);
+        stateTaxRates.put(State.FL, 0.0);
+        stateTaxRates.put(State.CO, 4.4);
+        stateTaxRates.put(State.IL, 4.95);
+        stateTaxRates.put(State.IN, 3.23);
+        stateTaxRates.put(State.NH, 5.0);
+        stateTaxRates.put(State.PA, 3.07);
+        stateTaxRates.put(State.UT, 4.85);
+        stateTaxRates.put(State.WA, 7.0);
+        stateTaxRates.put(State.KY, 5.0);
+        stateTaxRates.put(State.MA, 5.0);
+        stateTaxRates.put(State.NV, 0.0);
+        stateTaxRates.put(State.MI, 3.07);
     }
 
     @Override
     public double calculateTax(double taxableWages) {
-        Double rate = stateTaxRates.get(state.toUpperCase());
+        Double rate = stateTaxRates.get(state);
         return taxableWages * rate / 100;
     }
 

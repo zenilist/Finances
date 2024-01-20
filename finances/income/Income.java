@@ -1,8 +1,12 @@
 package finances.income;
 
+import finances.common.State;
+
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class Income {
+    private static final Logger LOGGER = Logger.getLogger("troubleshoot.log");
     private static double grossPayPerPayPeriod;
 
     public static void main(String[] args) {
@@ -37,7 +41,13 @@ public class Income {
     private static void firstRun(Scanner scanner) {
         System.out.println("\n--------------------------Paycheck Calculator--------------------------");
         double yearlySalary = Double.parseDouble(getInput(scanner, "Enter yearly salary: "));
-        String state = getInput(scanner, "Enter state of residency");
+        State state;
+        try {
+            state = State.getValue(getInput(scanner, "Enter state of residency"));
+        } catch (IllegalArgumentException e) {
+            LOGGER.severe("Invalid state! Defaulting to Washington state.");
+            state = State.WA;
+        }
         String payFrequency = getInput(scanner, "Enter pay frequency (weekly/biweekly/monthly/twice a month):").trim().toLowerCase();
         int payPeriod = getPayPeriod(payFrequency);
         setGrossPayPerPayPeriod(yearlySalary / payPeriod);
