@@ -9,8 +9,8 @@ public class StateTaxes implements Taxes {
 
     private static double totalStateTaxes;
     private final Map<State, Double> stateTaxRates = new HashMap<>();
-    private double stateTax;
-    private State state;
+    private final double stateTax;
+    private final State state;
 
     public StateTaxes(double taxableWages, State state) throws IllegalArgumentException {
         this.state = state;
@@ -18,10 +18,6 @@ public class StateTaxes implements Taxes {
         this.stateTax = calculateTax(taxableWages);
         totalStateTaxes += this.stateTax;
     }
-
-    public StateTaxes() {
-    }
-
     //add this feature later on, too many variations
     private void fillMap() {
         stateTaxRates.put(State.TX, 0.0);

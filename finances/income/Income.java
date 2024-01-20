@@ -33,7 +33,7 @@ public class Income {
         double rothTspRate = Double.parseDouble(getInput(scanner, "Enter ROTH TSP contribution percent rate(1/2/...100): "));
         double traditionalTspRate = Double.parseDouble(getInput(scanner, "Enter Traditional TSP contribution percent rate(1/2/...100): "));
         GrossPay grossPay = new GrossPay(grossPayPerPayPeriod);
-        NetPay netPay = new NetPay(grossPay.getGrossPay(), rothTspRate, traditionalTspRate, NetPay.state);
+        NetPay netPay = new NetPay(grossPay.grossPay(), rothTspRate, traditionalTspRate, NetPay.state);
         System.out.println();
         netPay.showIncomeBreakdown();
     }

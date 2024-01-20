@@ -2,7 +2,7 @@ package finances.income;
 
 public class Fers {
     private static double totalFersContribution;
-    private final double RATE = 4.4;
+    private static final double RATE = 4.4;
     private double fersContribution;
 
     public Fers(double grossPay) {
