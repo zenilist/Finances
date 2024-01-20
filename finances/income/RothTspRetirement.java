@@ -11,8 +11,6 @@ public class RothTspRetirement implements TspRetirement {
     public RothTspRetirement() {
     }
 
-    ;
-
     private static void addToTotalContribution(double contribution) {
         totalRothRetirement += contribution;
     }
