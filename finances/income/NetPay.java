@@ -1,6 +1,15 @@
 package finances.income;
 
+import com.opencsv.CSVWriter;
+import finances.common.IncomeType;
 import finances.common.State;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is used to calculate net pay from gross pay
@@ -11,6 +20,7 @@ public class NetPay {
     private static double totalNetPay;
     private final double RETIREMENT_ROTH_CONTRIBUTIONS_RATE;
     private final double RETIREMENT_TRADITIONAL_CONTRIBUTIONS_RATE;
+    private final List<Double> currentData = new ArrayList<>();
 
     /**
      * Builds the constructor to various calculations on net pay
@@ -48,7 +58,28 @@ public class NetPay {
                 - stateTaxAmount - fersContribution - medicareDeduction;
 
         totalNetPay += netPay;
+
+        setCurrentData(grossPay, federalTaxAmount, stateTaxAmount,
+                socialSecurityWithholding, medicareDeduction,
+                traditionalContribution, rothContribution, fersContribution, netPay);
+
     }
+
+    private void setCurrentData(double grossPay, double federalTaxAmount,
+                                double stateTaxAmount, double socialSecurityWithholding,
+                                double medicareDeduction, double traditionalContribution,
+                                double rothContribution, double fersContribution, double netPay) {
+        currentData.add(grossPay);
+        currentData.add(federalTaxAmount);
+        currentData.add(stateTaxAmount);
+        currentData.add(socialSecurityWithholding);
+        currentData.add(medicareDeduction);
+        currentData.add(traditionalContribution);
+        currentData.add(rothContribution);
+        currentData.add(fersContribution);
+        currentData.add(netPay);
+    }
+
     private static double getTaxableWages(double grossPay, double rothContribution) {
         return grossPay - rothContribution;
     }
@@ -69,15 +100,18 @@ public class NetPay {
         }
     }
     private static void fillOutputTable(String[][] table) {
-        table[0] = new String[]{"Gross Pay", String.format("%.2f", GrossPay.getTotalGrossPay())};
-        table[1] = new String[]{"Federal Taxes", String.format("%.2f", FederalTaxes.getTotalFederalTaxes())};
-        table[2] = new String[]{"State Taxes", String.format("%.2f", StateTaxes.getTotalStateTaxes())};
-        table[3] = new String[]{"Social Security Taxes", String.format("%.2f", SocialSecurity.getTotalSocialSecurityWithheld())};
-        table[4] = new String[]{"Medicare", String.format("%.2f", Medicare.getTotalMedicareDeductions())};
-        table[5] = new String[]{"Traditional TSP Retirement Fund", String.format("%.2f", new TraditionalTspRetirement().getTotalContributions())};
-        table[6] = new String[]{"Roth TSP Retirement Fund", String.format("%.2f", new RothTspRetirement().getTotalContributions())};
-        table[7] = new String[]{"FERS FUND", String.format("%.2f", new Fers().getTotalFersContribution())};
-        table[8] = new String[]{"Net Pay", String.format("%.2f",getTotalNetPay())};
+        table[0] = new String[]{IncomeType.GROSS_PAY.name(), String.format("%.2f", GrossPay.getTotalGrossPay())};
+        table[1] = new String[]{IncomeType.FEDERAL_TAXES.name(), String.format("%.2f", FederalTaxes.getTotalFederalTaxes())};
+        table[2] = new String[]{IncomeType.STATE_TAXES.name(), String.format("%.2f", StateTaxes.getTotalStateTaxes())};
+        table[3] = new String[]{IncomeType.SOCIAL_SECURITY_TAXES.name(), String.format("%.2f", SocialSecurity.getTotalSocialSecurityWithheld())};
+        table[4] = new String[]{IncomeType.MEDICARE_TAXES.name(), String.format("%.2f", Medicare.getTotalMedicareDeductions())};
+        table[5] = new String[]{IncomeType.TRADITIONAL_TSP.name(), String.format("%.2f", new TraditionalTspRetirement().getTotalContributions())};
+        table[6] = new String[]{IncomeType.ROTH_TSP.name(), String.format("%.2f", new RothTspRetirement().getTotalContributions())};
+        table[7] = new String[]{IncomeType.FERS.name(), String.format("%.2f", new Fers().getTotalFersContribution())};
+        table[8] = new String[]{IncomeType.NET_PAY.name(), String.format("%.2f",getTotalNetPay())};
     }
 
+    public List<Double> getCurrentData() {
+        return currentData;
+    }
 }
