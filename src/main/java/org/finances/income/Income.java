@@ -7,11 +7,13 @@ import org.finances.common.State;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Logger;
+
+import static org.finances.common.Utils.getFile;
+import static org.finances.common.Utils.getInput;
 
 public class Income {
     private static final Logger LOGGER = Logger.getLogger("troubleshoot.log");
@@ -21,18 +23,13 @@ public class Income {
     private static File csvFile;
     private static double rothTspRate = 0;
     private static double traditionalTspRate = 0;
-
-    public static void main(String[] args) {
-        runSimulator();
-    }
-
     public static void setGrossPayPerPayPeriod(double grossPayPerPayPeriod) {
         Income.grossPayPerPayPeriod = grossPayPerPayPeriod;
     }
 
-    public static void runSimulator() {
+    public static void runIncomeSimulator() {
         System.out.println("--------------------------Run Income Simulator--------------------------");
-        System.out.println("How many iterations do you want the simulator to run for?");
+        System.out.println("How many iterations do you want the income simulator to run for?");
         Scanner scanner = new Scanner(System.in);
         final int ITERATIONS = scanner.nextInt();
         if (ITERATIONS < 1) {
@@ -41,7 +38,7 @@ public class Income {
         generateCsv = getInput(scanner, "Do you want a csv with all the data? (Y/N)").equals("Y");
         isVariableRate = getInput(scanner, "Do you want to change retirement contribution on each pay period? (Y/N)").equals("Y");
         if (generateCsv) {
-            csvFile = createCsvFile();
+            csvFile = getFile("income.csv");
             addHeaderToCsv();
         }
         firstRun(scanner);
@@ -62,11 +59,6 @@ public class Income {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static File createCsvFile() {
-        String currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
-        return new File(currentDir + "/income breakdown.csv");
     }
 
     private static void generateNewRun(Scanner scanner, boolean firstRun) {
@@ -131,8 +123,4 @@ public class Income {
         };
     }
 
-    private static String getInput(Scanner scanner, String prompt) {
-        System.out.println(prompt);
-        return scanner.next();
-    }
 }
