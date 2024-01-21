@@ -17,7 +17,10 @@ public class Income {
     private static final Logger LOGGER = Logger.getLogger("troubleshoot.log");
     private static double grossPayPerPayPeriod;
     private static boolean generateCsv = false;
+    private static boolean isVariableRate = false;
     private static File csvFile;
+    private static double rothTspRate = 0;
+    private static double traditionalTspRate = 0;
 
     public static void main(String[] args) {
         runSimulator();
@@ -32,17 +35,22 @@ public class Income {
         System.out.println("How many iterations do you want the simulator to run for?");
         Scanner scanner = new Scanner(System.in);
         final int ITERATIONS = scanner.nextInt();
+        if (ITERATIONS < 1) {
+            throw new IllegalArgumentException("Must be at least 1!");
+        }
         generateCsv = getInput(scanner, "Do you want a csv with all the data? (Y/N)").equals("Y");
+        isVariableRate = getInput(scanner, "Do you want to change retirement contribution on each pay period? (Y/N)").equals("Y");
         if (generateCsv) {
             csvFile = createCsvFile();
             addHeaderToCsv();
         }
-        for (int i = 0; i < ITERATIONS; i++) {
-            if (i == 0) firstRun(scanner);
-            else run(scanner);
-            System.out.println("\n----------------------------Pay Period #" + (i + 1) + "----------------------------");
+        firstRun(scanner);
+        System.out.println("\n----------------------------Pay Period #1----------------------------");
+            for (int i = 1; i < ITERATIONS; i++) {
+                generateNewRun(scanner, false);
+                System.out.println("\n----------------------------Pay Period #" + (i + 1) + "----------------------------");
+            }
         }
-    }
 
     private static void addHeaderToCsv() {
         List<String> header = new ArrayList<>(List.of(IncomeType.GROSS_PAY.name(), IncomeType.FEDERAL_TAXES.name(),
@@ -58,12 +66,12 @@ public class Income {
 
     private static File createCsvFile() {
         String currentDir = Paths.get(".").toAbsolutePath().normalize().toString();
-        return new File(currentDir + "/latestincome.csv");
+        return new File(currentDir + "/income breakdown.csv");
     }
 
-    private static void run(Scanner scanner) {
-        double rothTspRate = Double.parseDouble(getInput(scanner, "Enter ROTH TSP contribution percent rate(1/2/...100): "));
-        double traditionalTspRate = Double.parseDouble(getInput(scanner, "Enter Traditional TSP contribution percent rate(1/2/...100): "));
+    private static void generateNewRun(Scanner scanner, boolean firstRun) {
+        if (isVariableRate || firstRun)
+            getNewRates(scanner);
         GrossPay grossPay = new GrossPay(grossPayPerPayPeriod);
         NetPay netPay = new NetPay(grossPay.grossPay(), rothTspRate, traditionalTspRate, NetPay.state);
         System.out.println();
@@ -71,6 +79,11 @@ public class Income {
         if (generateCsv){
             addPayPeriodDataToCsv(netPay);
         }
+    }
+
+    private static void getNewRates(Scanner scanner) {
+        rothTspRate = Double.parseDouble(getInput(scanner, "Enter ROTH TSP contribution percent rate(1/2/...100): "));
+        traditionalTspRate = Double.parseDouble(getInput(scanner, "Enter Traditional TSP contribution percent rate(1/2/...100): "));
     }
 
     private static void addPayPeriodDataToCsv(NetPay netPay) {
@@ -86,7 +99,7 @@ public class Income {
         List<Double> data = netPay.getCurrentData();
         String[] csvData = new String[data.size()];
         for (int i = 0; i < data.size(); i++){
-            csvData[i] = String.valueOf(data.get(i));
+            csvData[i] = String.format("%.2f",data.get(i));
         }
         return csvData;
     }
@@ -105,7 +118,7 @@ public class Income {
         int payPeriod = getPayPeriod(payFrequency);
         setGrossPayPerPayPeriod(yearlySalary / payPeriod);
         NetPay.state = state;
-        run(scanner);
+        generateNewRun(scanner, true);
     }
 
     private static int getPayPeriod(String payFrequency) {
