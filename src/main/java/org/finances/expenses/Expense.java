@@ -108,7 +108,8 @@ public class Expense {
         runCalculations(scanner);
         double totalExpenses = rent + electricity + utilities + gas + autoGas + autoInsurance + autoLoan + phone + discretionary + food + groceries;
         System.out.println("-----------------Total expenses : $" + totalExpenses + "------------------");
-        addDataToCsv(month);
+        if (generateCsv)
+            addDataToCsv(month);
         multiplyExpensesByMonth(month, totalExpenses);
     }
 
